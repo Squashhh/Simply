@@ -1,21 +1,25 @@
-import { client } from '../Index';
+import { Client } from 'discord.js';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const eventsPath = path.join(__dirname, '../events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
+export const loadEvents = async(client : Client) => {
 
-let  eventsLoadedCounter = 0;
+	const eventsPath = path.join(__dirname, '../events');
+	const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
 
-for (const file of eventFiles) {
-	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+	let  eventsLoadedCounter = 0;
+
+	for (const file of eventFiles) {
+		const filePath = path.join(eventsPath, file);
+		const event = require(filePath);
+		if (event.once) {
+			client.once(event.name, (...args) => event.execute(...args));
+		} else {
+			client.on(event.name, (...args) => event.execute(...args));
+		}
+		eventsLoadedCounter += 1
 	}
-	eventsLoadedCounter += 1
-}
 
-console.log(`🚀 ${eventsLoadedCounter} successfully loaded events.`);
+	console.log(`🚀 ${eventsLoadedCounter} successfully loaded events.`);
+
+}

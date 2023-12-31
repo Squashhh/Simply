@@ -1,10 +1,9 @@
-import { Events, Client } from 'discord.js';
+import { Events, Invite } from 'discord.js';
 
-module.exports = {
-	name: Events.ClientReady,
-	once: true,
-	execute(client: Client) {
-		console.log(`✅ ${client.user?.username} is now ready. `);
-		console.log(`📃 I am present on ${client.guilds.cache.size} server(s).`);
+export default {
+	name: Events.InviteCreate,
+	once: false,
+	execute(invite: Invite) {
+		console.log(`✅ The ${invite.code} invitation has just been created by ${invite.inviter?.username} for the ${invite.channel?.name} show, and expires on ${invite.expiresAt?.getDate} `);
 	},
 };
