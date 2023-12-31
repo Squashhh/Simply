@@ -2,7 +2,7 @@ import { Client } from 'discord.js';
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const loadEvents = async(client : Client) => {
+export function loadEvents(client : Client) : void {
 
 	const eventsPath = path.join(__dirname, '../events');
 	const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
